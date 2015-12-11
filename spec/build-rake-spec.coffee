@@ -20,7 +20,7 @@ describe 'Rakefile provider', ->
       spyOn(fs, 'existsSync').andReturn(false)
 
       expect(builder.isEligible()).toBe(false)
-      expect(fs.existsSync.mostRecentCall.args[0])
+      expect(fs.existsSync.calls[0].args[0])
         .toEqual(path.join(projectDir, 'Rakefile'))
 
   describe 'when Rakefile exists', ->
@@ -28,12 +28,12 @@ describe 'Rakefile provider', ->
       spyOn(fs, 'existsSync').andReturn(true)
 
       expect(builder.isEligible()).toBe(true)
-      expect(fs.existsSync.mostRecentCall.args[0])
+      expect(fs.existsSync.calls[0].args[0])
         .toEqual(path.join(projectDir, 'Rakefile'))
 
     it 'runs rake to get the list of tasks', ->
       spyOn(child_process, 'exec').andCallFake ->
-        child_process.exec.mostRecentCall.args[1](null, '', '')
+        child_process.exec.mostRecentCall.args[2](null, '', '')
       
       waitsForPromise -> builder.settings()
         
@@ -45,7 +45,7 @@ describe 'Rakefile provider', ->
       rakeOutput = "rake test   # run all tests\n"
 
       spyOn(child_process, 'exec').andCallFake ->
-        child_process.exec.mostRecentCall.args[1](null, rakeOutput, '')
+        child_process.exec.mostRecentCall.args[2](null, rakeOutput, '')
       
       waitsForPromise -> builder.settings().then (settings) ->
         expect(settings.length).toBe(1)
