@@ -1,0 +1,28 @@
+{
+  "name": "build-rake",
+  "main": "./lib/build-rake",
+  "version": "0.0.0",
+  "description": "Run Rake tasks directly from Atom. (Note: The 'build' package needs to be installed!)",
+  "keywords": [
+    "build",
+    "rake",
+    "Rakefile"
+  ],
+  "repository": "https://github.com/lslezak/build-rake",
+  "license": "MIT",
+  "engines": {
+    "atom": ">=1.0.0 <2.0.0"
+  },
+  "providedServices": {
+    "builder": {
+      "description": "Runs Rake tasks",
+      "versions": {
+        "2.0.0": "provideRakeBuilder"
+      }
+    }
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "coffeelint": "1.14.x"
+  }
+}
