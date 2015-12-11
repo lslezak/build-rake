@@ -1,6 +1,7 @@
 
 fs = require('fs')
 path = require('path')
+child_process = require('child_process')
 
 exports.provideRakeBuilder = ->
   class RakeBuildProvider
@@ -10,11 +11,15 @@ exports.provideRakeBuilder = ->
       'Rake'
 
     isEligible: ->
-      fs.existsSync(path.join(@cwd, 'Rakefile'))
+      files = ['Rakefile', 'rakefile', 'Rakefile.rb', 'rakefile.rb']
+      found = files.map (file) => path.join(@cwd, file)
+        .filter(fs.existsSync)
+      
+      found.length > 0
       
     settings: ->
-      new Promise (resolve, reject) ->
-        require('child_process').exec "rake -T", (error, stdout, stderr) ->
+      new Promise (resolve, reject) =>
+        child_process.exec "rake -T", {cwd: @cwd}, (error, stdout, stderr) ->
           reject(error) if error?
           config = []
           stdout.split("\n").forEach (line) ->
