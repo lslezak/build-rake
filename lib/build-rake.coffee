@@ -19,7 +19,7 @@ exports.provideRakeBuilder = ->
 
     settings: ->
       new Promise (resolve, reject) =>
-        rake_exec = if /^win/.test(process.platform) then "rake.bat" else "rake"
+        rake_exec = /^win/.test(process.platform) ? "rake.bat" : "rake"
         child_process.exec "#{rake_exec} -T", {cwd: @cwd}, (error, stdout, stderr) ->
           reject(error) if error?
           config = []
