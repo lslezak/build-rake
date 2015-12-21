@@ -14,20 +14,20 @@ exports.provideRakeBuilder = ->
       files = ['Rakefile', 'rakefile', 'Rakefile.rb', 'rakefile.rb']
       found = files.map (file) => path.join(@cwd, file)
         .filter(fs.existsSync)
-      
+
       found.length > 0
-      
+
     settings: ->
       new Promise (resolve, reject) =>
-        child_process.exec "rake -T", {cwd: @cwd}, (error, stdout, stderr) ->
+        rake_exec = if /^win/.test(process.platform) then "rake.bat" else "rake"
+        child_process.exec "#{rake_exec} -T", {cwd: @cwd}, (error, stdout, stderr) ->
           reject(error) if error?
           config = []
           stdout.split("\n").forEach (line) ->
             if (m = /^rake (\S+)\s*#\s*(\S+.*)/.exec(line))?
               config.push
                 name: "rake #{m[1]} - #{m[2]}"
-                exec: "rake"
+                exec: "#{rake_exec}"
                 sh: false
                 args: [ m[1] ]
           resolve(config)
-          
