@@ -65,5 +65,5 @@ describe 'Rakefile provider', ->
 
         runs ->
           expect(child_process.exec.mostRecentCall.args[0])
-                 .toEqual('rake.bat -T')
+            .toEqual('rake.bat -T')
 
