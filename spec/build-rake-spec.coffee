@@ -45,30 +45,30 @@ describe 'Rakefile provider', ->
           expect(child_process.exec.mostRecentCall.args[0]).toEqual('rake -T')
 
       it 'returns the found rake tasks', ->
-          # mocked "rake -T" output
-          rakeOutput = "rake test   # run all tests\n"
-          spyOn(child_process, 'exec').andCallFake ->
-            child_process.exec.mostRecentCall.args[2](null, rakeOutput, '')
+        # mocked "rake -T" output
+        rakeOutput = "rake test   # run all tests\n"
+        spyOn(child_process, 'exec').andCallFake ->
+          child_process.exec.mostRecentCall.args[2](null, rakeOutput, '')
 
-          waitsForPromise -> builder.settings().then (settings) ->
-            expect(settings.length).toBe(1)
-            expect(settings[0].exec).toEqual('rake')
-            expect(settings[0].args).toEqual(['test'])
+        waitsForPromise -> builder.settings().then (settings) ->
+          expect(settings.length).toBe(1)
+          expect(settings[0].exec).toEqual('rake')
+          expect(settings[0].args).toEqual(['test'])
 
     describe 'on Windows', ->
       beforeEach  ->
         Object.defineProperty process, 'platform', value: 'win32'
 
       it 'returns the found rake tasks', ->
-          # mocked "rake -T" output
-          rakeOutput = "rake test   # run all tests\n"
-          spyOn(child_process, 'exec').andCallFake ->
-            child_process.exec.mostRecentCall.args[2](null, rakeOutput, '')
+        # mocked "rake -T" output
+        rakeOutput = "rake test   # run all tests\n"
+        spyOn(child_process, 'exec').andCallFake ->
+          child_process.exec.mostRecentCall.args[2](null, rakeOutput, '')
 
-          waitsForPromise -> builder.settings().then (settings) ->
-            expect(settings.length).toBe(1)
-            expect(settings[0].exec).toEqual('rake.bat')
-            expect(settings[0].args).toEqual(['test'])
+        waitsForPromise -> builder.settings().then (settings) ->
+          expect(settings.length).toBe(1)
+          expect(settings[0].exec).toEqual('rake.bat')
+          expect(settings[0].args).toEqual(['test'])
 
       it 'runs rake.bat to get the list of tasks', ->
         spyOn(child_process, 'exec').andCallFake ->
