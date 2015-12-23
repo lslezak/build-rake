@@ -28,7 +28,7 @@ exports.provideRakeBuilder = ->
             if (m = /^rake (\S+)\s*#\s*(\S+.*)/.exec(line))?
               config.push
                 name: "rake #{m[1]} - #{m[2]}"
-                exec: "#{rake_exec}"
+                exec: rake_exec
                 sh: false
                 args: [ m[1] ]
           resolve(config)
