@@ -3,6 +3,17 @@ fs = require('fs')
 path = require('path')
 child_process = require('child_process')
 
+exports.config =
+  rakePlatform:
+    title: 'Platform on which Rake runs'
+    type: 'string'
+    enum: [
+      {order: 1, value: 'auto', description: 'Auto-detect'}
+      {order: 2, value: 'unix', description: 'Unix (rake)'}
+      {order: 3, value: 'windows', description: 'Windows (rake.bat)'}
+    ]
+    default: 'auto'
+
 exports.provideRakeBuilder = ->
   class RakeBuildProvider
     constructor: (@cwd) ->
@@ -19,8 +30,12 @@ exports.provideRakeBuilder = ->
 
     settings: ->
       new Promise (resolve, reject) =>
-        rake_exec = if /^win/.test(process.platform) then "rake.bat" else "rake"
-        rake_t    = "#{rake_exec} -T"
+        rake_exec = switch atom.config.get('build-rake.rakePlatform')
+          when 'auto'
+            if /^win/.test(process.platform) then 'rake.bat' else 'rake'
+          when 'windows' then 'rake.bat'
+          else 'rake'
+        rake_t = "#{rake_exec} -T"
         child_process.exec rake_t, {cwd: @cwd}, (error, stdout, stderr) ->
           reject(error) if error?
           config = []
