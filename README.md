@@ -17,5 +17,9 @@ which has to be installed as well!
 - See the [build package](https://github.com/noseglid/atom-build)
   for more details how to use it.
 
+## Seeing it working
+
+- `Cmd Alt T` / `Ctrl Alt T` / `F7` Displays the available build targets.
+
 ![Screen Cast](https://cloud.githubusercontent.com/assets/907998/11747115/b7ca1362-a021-11e5-98ed-6111d9fa1410.gif)
 
