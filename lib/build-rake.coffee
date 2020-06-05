@@ -24,7 +24,7 @@ exports.provideRakeBuilder = ->
         child_process.exec rake_t, {cwd: @cwd}, (error, stdout, stderr) ->
           reject(error) if error?
           config = []
-          stdout.split("\n").forEach (line) ->
+          "rake default  # Default task\n".concat(stdout).split("\n").forEach (line) ->
             if (m = /^rake (\S+)\s*#\s*(\S+.*)/.exec(line))?
               config.push
                 name: "rake #{m[1]} - #{m[2]}"
